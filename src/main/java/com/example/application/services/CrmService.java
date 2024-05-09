@@ -3,6 +3,8 @@ package com.example.application.services;
 import com.example.application.data.*;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -16,6 +18,7 @@ public class CrmService {
     private final TribunalRepository tribunalRepository;
     private final ConvocatoriaRepository convocatoriaRepository;
     private final DefensaRepository defensaRepository;
+    private final GeneradorActa generadorActa;
 
     public CrmService(RolRepository rolRepository,
                       PersonaRepository personaRepository,
@@ -33,6 +36,7 @@ public class CrmService {
         this.tribunalRepository = tribunalRepository;
         this.convocatoriaRepository = convocatoriaRepository;
         this.defensaRepository = defensaRepository;
+        this.generadorActa = new GeneradorActa() ;
     }
 
     public PersonaRepository getPersonaRepository() {
@@ -306,5 +310,9 @@ public class CrmService {
             tribunales.add(t);
         }
         tribunalRepository.saveAll(tribunales);
+    }
+
+    public File generarActa(Defensa defensa) throws IOException {
+        return this.generadorActa.generarActa(defensa);
     }
 }

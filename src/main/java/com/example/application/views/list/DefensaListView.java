@@ -5,12 +5,23 @@ import com.example.application.services.CrmService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
 import jakarta.annotation.security.PermitAll;
+import org.vaadin.olli.FileDownloadWrapper;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @PermitAll
 @Route(value = "defensas", layout = MainLayout.class)
@@ -68,6 +79,16 @@ public class DefensaListView extends VerticalLayout {
         grid.setColumns("rubrica");
         grid.addColumn(Defensa -> (Defensa.getTribunal().getCodigoTFG().getCodigo() + " " + Defensa.getTribunal().getCodigoTFG().getNombre() )).setHeader("Tribunal");
         grid.addColumn(Defensa -> (Defensa.getTribunal().getConvocatoria().getId().getCurso() + " Convocatoria " + Defensa.getTribunal().getConvocatoria().getId().getNumero() )).setHeader("Convocatoria");
+        grid.addColumn(
+                new ComponentRenderer<>(Button::new, (button, defensa) -> {
+                    button.addThemeVariants(ButtonVariant.LUMO_ICON,
+                            ButtonVariant.LUMO_ERROR,
+                            ButtonVariant.LUMO_TERTIARY);
+                    button.addClickListener(e -> {
+                        modificarGrid();
+                    });
+                    button.setIcon(new Icon(VaadinIcon.FILE_ADD ));
+                })).setHeader("Generar Acta");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editDefensa(event.getValue()));}
 
@@ -103,5 +124,34 @@ public class DefensaListView extends VerticalLayout {
 
     private void updateList() {
         grid.setItems(service.buscarTodasDefensas(null) );
+    }
+
+    private void modificarGrid() {
+        // Configuración de las columnas existentes...
+
+        grid.addColumn(new ComponentRenderer<>(defensa -> {
+            Button button = new Button("Descargar Acta");
+            button.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY);
+            button.setIcon(new Icon(VaadinIcon.DOWNLOAD));
+
+            try {
+                File f = service.generarActa(defensa);
+                FileDownloadWrapper buttonWrapper = new FileDownloadWrapper(
+                        new StreamResource(f.getName(), () -> {
+                            try {
+                                grid.removeColumn(grid.getColumns().get(grid.getColumns().size()-1));
+                                ByteArrayInputStream bytes = new ByteArrayInputStream(Files.readAllBytes(service.generarActa(defensa).toPath()));
+                                return bytes;
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        })
+                );
+                buttonWrapper.wrapComponent(button);
+                return buttonWrapper;
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        })).setHeader("Descargar Acta");
     }
 }
