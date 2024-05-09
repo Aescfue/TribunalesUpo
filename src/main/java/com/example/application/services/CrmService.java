@@ -3,9 +3,8 @@ package com.example.application.services;
 import com.example.application.data.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class CrmService {
@@ -218,6 +217,15 @@ public class CrmService {
         }
     }
 
+    public Convocatoria buscarConvocatoria(String curso, String numero) {
+        List<Convocatoria> lista = convocatoriaRepository.buscar(curso, numero);
+        if (lista != null && !lista.isEmpty())
+            return lista.get(0);
+        else
+            return null;
+        }
+
+
     public void guardaDefensa(Defensa defensa) {
         Defensa d = buscarDefensa(defensa);
         if (d == null )
@@ -272,4 +280,31 @@ public class CrmService {
         return 1;
     }
 
+    public void generarTribunalesAleatorios(String curso, String numero) {
+        Convocatoria c = buscarConvocatoria(curso, numero);
+
+        List<Tribunal> tribunales = new ArrayList<Tribunal>();
+        List<Tfg> listado = tfgRepository.buscarTfgsSinTribunal(curso,numero);
+        List<Docente> docentes = docenteRepository.findAll();
+        for (Tfg tfg : listado) {
+            Set<Docente> seleccionados = new HashSet<>();
+            while (seleccionados.size() != 3) {
+                Random rand = new Random();
+                int indiceAleatorio = rand.nextInt(docentes.size());
+                Docente docente = docentes.get(indiceAleatorio);
+                seleccionados.add(docente);
+            }
+            Tribunal t = new Tribunal();
+            t.setConvocatoria(c);
+            t.setCodigoTFG(tfg);
+            t.setFecha(LocalDate.now());
+            List<Docente> listaSeleccionados = new ArrayList<>(seleccionados);
+            t.setDocente1(listaSeleccionados.get(0));
+            t.setDocente2(listaSeleccionados.get(1));
+            t.setDocente3(listaSeleccionados.get(2));
+            t.ordenarDocentes();
+            tribunales.add(t);
+        }
+        tribunalRepository.saveAll(tribunales);
+    }
 }

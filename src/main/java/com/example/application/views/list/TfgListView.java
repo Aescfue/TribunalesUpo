@@ -70,7 +70,7 @@ public class TfgListView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("codigo","nombre");
         grid.addColumn(Tfg -> (Tfg.getAlumno().getPersona().getNombre() + " " + Tfg.getAlumno().getPersona().getApellidos())).setHeader("Alumno");
-        grid.addColumn(Tfg -> (Tfg.getConvocatoria().getId().getCurso() + " " + Tfg.getConvocatoria().getId().getNumero())).setHeader("Alumno");
+        grid.addColumn(Tfg -> (Tfg.getConvocatoria().getId().getCurso() + " " + Tfg.getConvocatoria().getId().getNumero())).setHeader("Convocatoria");
         grid.addColumn(Tfg -> (Tfg.getDocente1().getPersona().getNombre() + " " + Tfg.getDocente1().getPersona().getApellidos() )).setHeader("Tutor");
         grid.addColumn(Tfg -> (Tfg.getDocente2() == null ? "" : Tfg.getDocente2().getPersona().getNombre() + " " + Tfg.getDocente2().getPersona().getApellidos() )).setHeader("Tutor 2");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

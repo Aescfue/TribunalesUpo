@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Entity
@@ -79,23 +78,26 @@ public class Docente implements Comparable<Docente> {
     @Override
     public int compareTo(Docente d2) {
         int salida =0;
-        HashMap<String, Integer> categorias  = (HashMap<String, Integer>) Map.of(
-                "PROFESOR/A VISITANTE LOU",10,
-                "PROFESOR/A ASOCIADO LOU", 20,
-                "PROFESOR/A SUSTITUTO INTERINO", 30,
-                "PROFESOR/A COLABORADOR", 40,
-                "PROFESOR/A TITULAR ESCUELA UNIVERSITARIA", 50,
-                "PROFESOR/A AYUDANTE DOCTOR", 60,
-                "PROFESOR/A TITULAR DE UNIVERSIDAD",70,
-                "PROFESOR/A CONTRATADO DOCTOR TEMPORAL",80,
-                "PROFESOR/A CONTRATADO DOCTOR", 90,
-                "CATEDRATICO/A DE UNIVERSIDAD",100);
+        HashMap<String, Integer> categorias = new HashMap<String, Integer>();
+        categorias.put("PROFESOR/A VISITANTE LOU",10);
+        categorias.put("PROFESOR/A ASOCIADO LOU", 20);
+        categorias.put("PROFESOR/A SUSTITUTO INTERINO", 30);
+        categorias.put("PROFESOR/A COLABORADOR", 40);
+        categorias.put("PROFESOR/A TITULAR ESCUELA UNIVERSITARIA", 50);
+        categorias.put("PROFESOR/A AYUDANTE DOCTOR", 60);
+        categorias.put("PROFESOR/A TITULAR DE UNIVERSIDAD",70);
+        categorias.put("PROFESOR/A CONTRATADO DOCTOR TEMPORAL",80);
+        categorias.put("PROFESOR/A CONTRATADO DOCTOR", 90);
+        categorias.put("CATEDRATICO/A DE UNIVERSIDAD",100);
 
         if (categorias.get(this.categoria) > categorias.get(d2.categoria)) {
             salida= 1;
         }
         if(categorias.get(this.categoria).intValue() == categorias.get(d2.categoria).intValue()){
-            salida = this.fechaIngreso.compareTo(d2.fechaIngreso);
+            if (this.fechaIngreso.isBefore(d2.getFechaIngreso()))
+                salida= 1;
+            else
+                salida= -1;
         }
         if(categorias.get(this.categoria) < categorias.get(d2.categoria)){
             salida = -1;

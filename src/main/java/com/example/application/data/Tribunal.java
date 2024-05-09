@@ -25,17 +25,17 @@ public class Tribunal {
     private Tfg codigoTFG;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "dni_1", nullable = false)
     private Docente docente1;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "dni_2", nullable = false)
     private Docente docente2;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "dni_3", nullable = false)
     private Docente docente3;
 
@@ -105,13 +105,14 @@ public class Tribunal {
 
     public void ordenarDocentes(){
         List<Docente> docentes = new ArrayList<Docente>();
+        Docente d1 = this.getDocente1();
         docentes.add(docente1);
         docentes.add(docente2);
         docentes.add(docente3);
         Collections.sort(docentes);
 
-        this.docente1 = docentes.get(0);
+        this.docente1 = docentes.get(2);
         this.docente2 = docentes.get(1);
-        this.docente3 = docentes.get(2);
+        this.docente3 = docentes.get(0);
     }
 }

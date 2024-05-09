@@ -20,8 +20,8 @@ import jakarta.annotation.security.PermitAll;
 public class TribunalListView extends VerticalLayout {
     Grid<Tribunal> grid = new Grid<>(Tribunal.class);
     TextField anno = new TextField();
-    TextField curso = new TextField();
-    TextField numero = new TextField();
+    TextField curso = new TextField("Curso para gen. aut.");
+    TextField numero = new TextField("Número para gen. aut.");
     Button boton = new Button("Generación aleatoria");
     TribunalForm form;
     CrmService service;
@@ -72,9 +72,9 @@ public class TribunalListView extends VerticalLayout {
         grid.setSizeFull();
         grid.removeAllColumns();
         grid.setColumns("fecha");
-        grid.addColumn(Tribunal -> (Tribunal.getDocente1().getPersona().getNombre() + " " + Tribunal.getDocente1().getPersona().getApellidos())).setHeader("Docente");
-        grid.addColumn(Tribunal -> (Tribunal.getDocente2().getPersona().getNombre() + " " + Tribunal.getDocente2().getPersona().getApellidos())).setHeader("Docente");
-        grid.addColumn(Tribunal -> (Tribunal.getDocente3().getPersona().getNombre() + " " + Tribunal.getDocente3().getPersona().getApellidos())).setHeader("Docente");
+        grid.addColumn(Tribunal -> (Tribunal.getDocente1().getPersona().getNombre() + " " + Tribunal.getDocente1().getPersona().getApellidos())).setHeader("Presidente");
+        grid.addColumn(Tribunal -> (Tribunal.getDocente2().getPersona().getNombre() + " " + Tribunal.getDocente2().getPersona().getApellidos())).setHeader("Vocal");
+        grid.addColumn(Tribunal -> (Tribunal.getDocente3().getPersona().getNombre() + " " + Tribunal.getDocente3().getPersona().getApellidos())).setHeader("Secretario");
         grid.addColumn(Tfg -> (Tfg.getCodigoTFG().getCodigo())).setHeader("TFG");
         grid.addColumn(Tribunal -> (Tribunal.getConvocatoria().getId().getCurso() + " Convocatoria " + Tribunal.getConvocatoria().getId().getNumero() )).setHeader("Convocatoria");
         grid.setColumnOrder(grid.getColumns().get(1),grid.getColumns().get(2),grid.getColumns().get(3),grid.getColumns().get(4),grid.getColumns().get(0),grid.getColumns().get(5));
@@ -88,12 +88,15 @@ public class TribunalListView extends VerticalLayout {
         anno.setValue("2023");
         anno.addValueChangeListener(e -> updateList());
 
-        
+        boton.addClickListener(click ->{
+            service.generarTribunalesAleatorios(curso.getValue(),numero.getValue());
+            updateList();
+        });
 
         Button addTribunalButton = new Button("Gestión manual de tribunales");
         addTribunalButton.addClickListener(click -> addTribunal());
 
-        var toolbar = new HorizontalLayout(anno ,addTribunalButton);
+        var toolbar = new HorizontalLayout(anno, addTribunalButton, boton, curso, numero);
         toolbar.addClassName("toolbar");
         return toolbar;
     }

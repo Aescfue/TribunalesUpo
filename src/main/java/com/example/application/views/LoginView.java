@@ -23,8 +23,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         login.setAction("login");
-
-        add(new H1("Vaadin CRM"), login);
+        add(new H1("TribunalesUPO"), login);
     }
 
     @Override
