@@ -20,6 +20,8 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
             "where lower(d.dni) like lower(concat('%', :searchTerm, '%')) ")
     List<Docente> buscarDni(@Param("searchTerm") String searchTerm);
 
+    List<Docente> findByDni(String dni);
+
     @Transactional
     @Modifying
     @Query(

@@ -289,15 +289,30 @@ public class CrmService {
 
         List<Tribunal> tribunales = new ArrayList<Tribunal>();
         List<Tfg> listado = tfgRepository.buscarTfgsSinTribunal(curso,numero);
-        List<Docente> docentes = docenteRepository.findAll();
+
+
+        ComparadorListaParticipaciones comparator = new ComparadorListaParticipaciones();
+        List<Object[]> docentesOrdenados = this.obtenerDocentesMenosParticipacion();
+
+
         for (Tfg tfg : listado) {
             Set<Docente> seleccionados = new HashSet<>();
+            int elementos = 0;
             while (seleccionados.size() != 3) {
                 Random rand = new Random();
-                int indiceAleatorio = rand.nextInt(docentes.size());
-                Docente docente = docentes.get(indiceAleatorio);
+                int indiceAleatorio = rand.nextInt(docentesOrdenados.size()/2);
+
+                String dni = (String) docentesOrdenados.get(indiceAleatorio)[0];
+                Docente docente = this.docenteRepository.findByDni(dni).get(0);
                 seleccionados.add(docente);
+
+                if (elementos != seleccionados.size()){
+                    elementos = seleccionados.size();
+                    docentesOrdenados.get(indiceAleatorio)[1]=((long)docentesOrdenados.get(indiceAleatorio)[1] + 1);
+                    docentesOrdenados.sort(comparator);
+                }
             }
+
             Tribunal t = new Tribunal();
             t.setConvocatoria(c);
             t.setCodigoTFG(tfg);
@@ -318,5 +333,9 @@ public class CrmService {
     
     public List<Object[]> obtenerDocentesTribunalesEstadistica(){
         return tribunalRepository.estadisticaDocentesTribunal();
+    }
+    
+    public List<Object[]> obtenerDocentesMenosParticipacion(){
+        return tribunalRepository.docentesMenosParticipaciones();
     }
 }

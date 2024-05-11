@@ -35,6 +35,7 @@ public class DashboardView extends VerticalLayout {
     }
 
     private Chart getCompaniesChart() {
+
         Chart chart = new Chart(ChartType.PIE);
         Configuration conf = chart.getConfiguration();
         Tooltip tooltip = new Tooltip();
