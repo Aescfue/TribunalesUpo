@@ -33,7 +33,7 @@ public class DefensaForm extends FormLayout {
             addClassName("Defensa-form");
             binder.bindInstanceFields(this);
             tribunal.setItems(tribunales);
-            tribunal.setItemLabelGenerator(tribunal -> tribunal.getCodigoTFG().getCodigo());
+            tribunal.setItemLabelGenerator(tribunal -> tribunal.getCodigoTFG().getCodigo() + " " + tribunal.getConvocatoria().getId().getCurso() + " " + tribunal.getConvocatoria().getId().getNumero());
             add(tribunal,calidad,adquisicion,presentacion,defensa,createButtonsLayout());
     }
 

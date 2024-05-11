@@ -315,4 +315,8 @@ public class CrmService {
     public File generarActa(Defensa defensa) throws IOException {
         return this.generadorActa.generarActa(defensa);
     }
+    
+    public List<Object[]> obtenerDocentesTribunalesEstadistica(){
+        return tribunalRepository.estadisticaDocentesTribunal();
+    }
 }

@@ -77,7 +77,7 @@ public class DefensaListView extends VerticalLayout {
         grid.setSizeFull();
         grid.removeAllColumns();
         grid.setColumns("calidad","adquisicion", "presentacion", "defensa");
-        grid.addColumn(Defensa -> (Defensa.getTribunal().getCodigoTFG().getCodigo() + " " + Defensa.getTribunal().getCodigoTFG().getNombre() )).setHeader("Tribunal");
+        grid.addColumn(Defensa -> (Defensa.getTribunal().getCodigoTFG().getCodigo() + " " + Defensa.getTribunal().getCodigoTFG().getNombre() )).setHeader("TFG");
         grid.addColumn(Defensa -> (Defensa.getTribunal().getConvocatoria().getId().getCurso())).setHeader("Convocatoria");
         grid.addColumn(Defensa -> (Defensa.getTribunal().getConvocatoria().getId().getNumero() )).setHeader("Número convocatoria");
         grid.addColumn(

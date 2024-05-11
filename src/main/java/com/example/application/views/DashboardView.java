@@ -3,15 +3,15 @@ package com.example.application.views;
 import com.example.application.services.CrmService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.charts.Chart;
-import com.vaadin.flow.component.charts.model.ChartType;
-import com.vaadin.flow.component.charts.model.DataSeries;
-import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.charts.model.*;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.PermitAll;
+
+import java.util.List;
 
 @PermitAll
 @Route(value = "dashboard", layout = MainLayout.class)
@@ -27,7 +27,7 @@ public class DashboardView extends VerticalLayout {
     }
 
     private Component getContactStats() {
-        Span stats = new Span(1 + " docentes");
+        Span stats = new Span("Docentes que han participado en más Tribunales");
         stats.addClassNames(
                 LumoUtility.FontSize.XLARGE,
                 LumoUtility.Margin.Top.MEDIUM);
@@ -36,10 +36,18 @@ public class DashboardView extends VerticalLayout {
 
     private Chart getCompaniesChart() {
         Chart chart = new Chart(ChartType.PIE);
+        Configuration conf = chart.getConfiguration();
+        Tooltip tooltip = new Tooltip();
+        tooltip.setValueDecimals(0);
+        conf.setTooltip(tooltip);
 
         DataSeries dataSeries = new DataSeries();
-        service.buscarTodosDocentes(null).forEach(docente ->
-                dataSeries.add(new DataSeriesItem(docente.getPersona().getNombre(), 1)));
+
+
+        List<Object[]> lista = service.obtenerDocentesTribunalesEstadistica();
+        for (Object[] elemento : lista) {
+            dataSeries.add(new DataSeriesItem((String) elemento[0], (Number) elemento[1]));
+        }
         chart.getConfiguration().setSeries(dataSeries);
         return chart;
     }
