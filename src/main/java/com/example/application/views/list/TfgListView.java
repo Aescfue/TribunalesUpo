@@ -1,5 +1,6 @@
 package com.example.application.views.list;
 
+import com.example.application.data.ComparadorCodigoTfg;
 import com.example.application.data.Tfg;
 import com.example.application.services.CrmService;
 import com.example.application.views.MainLayout;
@@ -13,6 +14,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+
+import java.util.List;
 
 @PermitAll
 @Route(value = "tfg", layout = MainLayout.class)
@@ -70,7 +73,8 @@ public class TfgListView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("codigo","nombre");
         grid.addColumn(Tfg -> (Tfg.getAlumno().getPersona().getNombre() + " " + Tfg.getAlumno().getPersona().getApellidos())).setHeader("Alumno");
-        grid.addColumn(Tfg -> (Tfg.getConvocatoria().getId().getCurso() + " " + Tfg.getConvocatoria().getId().getNumero())).setHeader("Convocatoria");
+        grid.addColumn(Tfg -> (Tfg.getConvocatoria().getId().getCurso())).setHeader("Convocatoria");
+        grid.addColumn(Tfg -> (Tfg.getConvocatoria().getId().getNumero() )).setHeader("Número conv");
         grid.addColumn(Tfg -> (Tfg.getDocente1().getPersona().getNombre() + " " + Tfg.getDocente1().getPersona().getApellidos() )).setHeader("Tutor");
         grid.addColumn(Tfg -> (Tfg.getDocente2() == null ? "" : Tfg.getDocente2().getPersona().getNombre() + " " + Tfg.getDocente2().getPersona().getApellidos() )).setHeader("Tutor 2");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
@@ -113,6 +117,9 @@ public class TfgListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.buscarTodosTfgs(filterText.getValue()));
+        List<Tfg> lista =service.buscarTodosTfgs(filterText.getValue());
+        ComparadorCodigoTfg c = new ComparadorCodigoTfg();
+        lista.sort(c);
+        grid.setItems(lista);
     }
 }

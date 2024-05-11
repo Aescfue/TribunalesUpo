@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TfgRepository extends JpaRepository<Tfg, Long> {
 
-    @Query("select t from Tfg t join fetch t.codigo cod " +
+    @Query("select t from Tfg t " +
             "where lower(t.codigo) like lower(concat('%', :searchTerm, '%')) ")
     List<Tfg> search(@Param("searchTerm") String searchTerm);
 

@@ -115,7 +115,7 @@ public class TribunalForm extends FormLayout {
 
     private Integer tfgAsignado(String codigo, Integer curso, Integer numero) {
         List<Tribunal> lista = service.buscarTodosTribunalesCodigo(codigo, curso, numero);
-        return lista.get(0).getId();
+        return lista.isEmpty()?null:lista.get(0).getId();
     }
 
     public void setTribunal(Tribunal Tribunal) {

@@ -14,6 +14,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 
+import java.time.LocalDate;
+
 @PermitAll
 @Route(value = "tribunales", layout = MainLayout.class)
 @PageTitle("Tribunales")
@@ -76,8 +78,9 @@ public class TribunalListView extends VerticalLayout {
         grid.addColumn(Tribunal -> (Tribunal.getDocente2().getPersona().getNombre() + " " + Tribunal.getDocente2().getPersona().getApellidos())).setHeader("Vocal");
         grid.addColumn(Tribunal -> (Tribunal.getDocente3().getPersona().getNombre() + " " + Tribunal.getDocente3().getPersona().getApellidos())).setHeader("Secretario");
         grid.addColumn(Tfg -> (Tfg.getCodigoTFG().getCodigo())).setHeader("TFG");
-        grid.addColumn(Tribunal -> (Tribunal.getConvocatoria().getId().getCurso() + " Convocatoria " + Tribunal.getConvocatoria().getId().getNumero() )).setHeader("Convocatoria");
-        grid.setColumnOrder(grid.getColumns().get(1),grid.getColumns().get(2),grid.getColumns().get(3),grid.getColumns().get(4),grid.getColumns().get(0),grid.getColumns().get(5));
+        grid.addColumn(Tribunal -> (Tribunal.getConvocatoria().getId().getCurso())).setHeader("Convocatoria");
+        grid.addColumn(Tribunal -> (Tribunal.getConvocatoria().getId().getNumero() )).setHeader("Número convocatoria");
+        grid.setColumnOrder(grid.getColumns().get(1),grid.getColumns().get(2),grid.getColumns().get(3),grid.getColumns().get(4),grid.getColumns().get(0),grid.getColumns().get(5),grid.getColumns().get(6));
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editTribunal(event.getValue()));}
 
@@ -85,7 +88,7 @@ public class TribunalListView extends VerticalLayout {
         anno.setPlaceholder("Buscar por año: ...");
         anno.setClearButtonVisible(true);
         anno.setValueChangeMode(ValueChangeMode.LAZY);
-        anno.setValue("2023");
+        anno.setValue(String.valueOf(LocalDate.now().getYear()-1));
         anno.addValueChangeListener(e -> updateList());
 
         boton.addClickListener(click ->{
