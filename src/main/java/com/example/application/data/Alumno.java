@@ -23,19 +23,6 @@ public class Alumno {
     @Column(name = "fecha_ingreso", nullable = false)
     private LocalDate fechaIngreso;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "dni", nullable = false)
-    private Persona persona1;
-
-    public Persona getPersona1() {
-        return persona1;
-    }
-
-    public void setPersona1(Persona persona1) {
-        this.persona1 = persona1;
-    }
-
     public String getDni() {
         return dni;
     }

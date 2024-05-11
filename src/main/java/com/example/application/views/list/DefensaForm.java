@@ -19,7 +19,10 @@ import java.util.List;
 
 public class DefensaForm extends FormLayout {
     ComboBox<Tribunal> tribunal = new ComboBox<>("Tribunal");
-    NumberField rubrica = new NumberField("Rubrica");
+    NumberField calidad = new NumberField("Calidad técnica del proyecto desarrollado");
+    NumberField adquisicion = new NumberField("Adquisición de las competencias de la asignatura");
+    NumberField presentacion = new NumberField("Presentación");
+    NumberField defensa = new NumberField("Defensa");
     Button save = new Button("Guardar");
     Button delete = new Button("Eliminar");
     Button close = new Button("Cancelar");
@@ -31,7 +34,7 @@ public class DefensaForm extends FormLayout {
             binder.bindInstanceFields(this);
             tribunal.setItems(tribunales);
             tribunal.setItemLabelGenerator(tribunal -> tribunal.getCodigoTFG().getCodigo());
-            add(tribunal,rubrica,createButtonsLayout());
+            add(tribunal,calidad,adquisicion,presentacion,defensa,createButtonsLayout());
     }
 
     private Component createButtonsLayout() {

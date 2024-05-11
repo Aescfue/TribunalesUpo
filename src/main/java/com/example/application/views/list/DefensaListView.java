@@ -76,9 +76,10 @@ public class DefensaListView extends VerticalLayout {
         grid.addClassNames("Defensa-grid");
         grid.setSizeFull();
         grid.removeAllColumns();
-        grid.setColumns("rubrica");
+        grid.setColumns("calidad","adquisicion", "presentacion", "defensa");
         grid.addColumn(Defensa -> (Defensa.getTribunal().getCodigoTFG().getCodigo() + " " + Defensa.getTribunal().getCodigoTFG().getNombre() )).setHeader("Tribunal");
-        grid.addColumn(Defensa -> (Defensa.getTribunal().getConvocatoria().getId().getCurso() + " Convocatoria " + Defensa.getTribunal().getConvocatoria().getId().getNumero() )).setHeader("Convocatoria");
+        grid.addColumn(Defensa -> (Defensa.getTribunal().getConvocatoria().getId().getCurso())).setHeader("Convocatoria");
+        grid.addColumn(Defensa -> (Defensa.getTribunal().getConvocatoria().getId().getNumero() )).setHeader("Número convocatoria");
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, defensa) -> {
                     button.addThemeVariants(ButtonVariant.LUMO_ICON,
@@ -130,7 +131,7 @@ public class DefensaListView extends VerticalLayout {
         // Configuración de las columnas existentes...
 
         grid.addColumn(new ComponentRenderer<>(defensa -> {
-            Button button = new Button("Descargar Acta");
+            Button button = new Button("Descargar");
             button.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY);
             button.setIcon(new Icon(VaadinIcon.DOWNLOAD));
 
