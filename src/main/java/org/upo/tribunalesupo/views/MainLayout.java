@@ -1,13 +1,17 @@
 package org.upo.tribunalesupo.views;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,8 +39,19 @@ public class MainLayout extends AppLayout {
 
         String u = securityService.getAuthenticatedUser().getUsername();
         Button logout = new Button("Cerrar sesión ", e -> securityService.logout());
+        Button cambiarTema = new Button();
+        cambiarTema.setIcon(VaadinIcon.MOON.create());
+        cambiarTema.addClickListener (event -> {
+            ThemeList themeList = UI.getCurrent().getElement().getThemeList();
 
-        var header = new HorizontalLayout(new DrawerToggle(), logo, logout );
+            if (themeList.contains(Lumo.DARK)) {
+                themeList.remove(Lumo.DARK);
+            } else {
+                themeList.add(Lumo.DARK);
+            }
+        });
+
+        var header = new HorizontalLayout(new DrawerToggle(), logo, cambiarTema, logout );
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(logo);
