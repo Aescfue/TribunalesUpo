@@ -1,8 +1,5 @@
 package org.upo.tribunalesupo.views.list;
 
-import org.upo.tribunalesupo.data.Docente;
-import org.upo.tribunalesupo.services.CrmService;
-import org.upo.tribunalesupo.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -12,9 +9,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import org.upo.tribunalesupo.data.Docente;
+import org.upo.tribunalesupo.services.CrmService;
+import org.upo.tribunalesupo.views.MainLayout;
 
-@PermitAll
+@RolesAllowed("ADMIN")
 @Route(value = "docentes", layout = MainLayout.class)
 @PageTitle("Docentes")
 public class DocenteListView extends VerticalLayout {

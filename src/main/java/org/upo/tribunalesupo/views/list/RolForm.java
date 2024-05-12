@@ -1,6 +1,5 @@
 package org.upo.tribunalesupo.views.list;
 
-import org.upo.tribunalesupo.data.Rol;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -10,14 +9,15 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.shared.Registration;
+import org.upo.tribunalesupo.data.Rol;
 
 import java.util.List;
 public class RolForm extends FormLayout {
     ComboBox<String> usuarios = new ComboBox<>("Usuario");
-    TextField codigo = new TextField("Rol");
+    Select<String> codigo = new Select<>();
 
     Button save = new Button("Guardar");
     Button delete = new Button("Eliminar");
@@ -29,6 +29,7 @@ public class RolForm extends FormLayout {
         binder.bindInstanceFields(this);
         usuarios.setItems(personas);
         usuarios.setItemLabelGenerator(String::toString);
+        codigo.setItems("ADMIN","ALU","DOC");
         add(usuarios,
                 codigo,
                 createButtonsLayout());

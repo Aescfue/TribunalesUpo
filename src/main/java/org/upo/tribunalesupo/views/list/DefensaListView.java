@@ -1,8 +1,5 @@
 package org.upo.tribunalesupo.views.list;
 
-import org.upo.tribunalesupo.data.Defensa;
-import org.upo.tribunalesupo.services.CrmService;
-import org.upo.tribunalesupo.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -15,7 +12,10 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import org.upo.tribunalesupo.data.Defensa;
+import org.upo.tribunalesupo.services.CrmService;
+import org.upo.tribunalesupo.views.MainLayout;
 import org.vaadin.olli.FileDownloadWrapper;
 
 import java.io.ByteArrayInputStream;
@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-@PermitAll
+@RolesAllowed("ADMIN")
 @Route(value = "defensas", layout = MainLayout.class)
 @PageTitle("Defensas")
 public class DefensaListView extends VerticalLayout {

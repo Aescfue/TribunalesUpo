@@ -1,9 +1,5 @@
 package org.upo.tribunalesupo.views.list;
 
-import org.upo.tribunalesupo.data.ComparadorCodigoTfg;
-import org.upo.tribunalesupo.data.Tfg;
-import org.upo.tribunalesupo.services.CrmService;
-import org.upo.tribunalesupo.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -14,6 +10,14 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.upo.tribunalesupo.data.ComparadorCodigoTfg;
+import org.upo.tribunalesupo.data.Persona;
+import org.upo.tribunalesupo.data.Tfg;
+import org.upo.tribunalesupo.services.CrmService;
+import org.upo.tribunalesupo.views.MainLayout;
 
 import java.util.List;
 
@@ -26,23 +30,36 @@ public class TfgListView extends VerticalLayout {
 
     TfgForm form;
     CrmService service;
+    Authentication rolesAut = SecurityContextHolder.getContext().getAuthentication();
 
     public TfgListView(CrmService service) {
         this.service = service;
         addClassName("TfgList-view");
         setSizeFull();
         configureGrid();
-        configureForm();
 
-        add(getToolbar(), getContent());
-        updateList();
-        closeEditor();
+        if(!rolesAut.getAuthorities().isEmpty() && !rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ALU")) && !rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_DOC"))) {
+            configureForm();
+            add(getToolbar(), getContent());
+            updateList();
+            closeEditor();
+        }else{
+            add(getContent());
+            Persona p = service.buscarPersona(rolesAut.getName()).get(0);
+            updateList(p);
+        }
     }
 
     private HorizontalLayout getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2, grid);
-        content.setFlexGrow(1, form);
+        HorizontalLayout content;
+        if(rolesAut.getAuthorities().isEmpty() || rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ALU")) || rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_DOC"))) {
+            content = new HorizontalLayout(grid);
+            content.setFlexGrow(2, grid);
+        }else{
+            content = new HorizontalLayout(grid, form);
+            content.setFlexGrow(2, grid);
+            content.setFlexGrow(1, form);
+        }
         content.addClassNames("content");
         content.setSizeFull();
         return content;
@@ -118,6 +135,13 @@ public class TfgListView extends VerticalLayout {
 
     private void updateList() {
         List<Tfg> lista =service.buscarTodosTfgs(filterText.getValue());
+        ComparadorCodigoTfg c = new ComparadorCodigoTfg();
+        lista.sort(c);
+        grid.setItems(lista);
+    }
+
+    private void updateList(Persona p) {
+        List<Tfg> lista =service.buscarTfgPersona(p);
         ComparadorCodigoTfg c = new ComparadorCodigoTfg();
         lista.sort(c);
         grid.setItems(lista);

@@ -1,9 +1,9 @@
 package org.upo.tribunalesupo.services;
 
-import org.upo.tribunalesupo.data.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.upo.tribunalesupo.data.Persona;
 
 import java.util.List;
 
@@ -17,4 +17,6 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
             "where lower(p.nombre) like lower(concat('%', :searchTerm, '%')) " +
             "or lower(p.apellidos) like lower(concat('%', :searchTerm, '%'))")
     List<Persona> buscarPorNombre(@Param("searchTerm") String searchTerm);
+
+    List<Persona> findByUsuario(String usuario);
 }

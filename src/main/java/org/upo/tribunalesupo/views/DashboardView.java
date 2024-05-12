@@ -1,6 +1,5 @@
 package org.upo.tribunalesupo.views;
 
-import org.upo.tribunalesupo.services.CrmService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
@@ -9,19 +8,20 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import org.upo.tribunalesupo.services.CrmService;
 
 import java.util.List;
 
-@PermitAll
-@Route(value = "dashboard", layout = MainLayout.class)
-@PageTitle("Dashboard | Vaadin CRM")
+@RolesAllowed("ADMIN")
+@Route(value = "estadisticas", layout = MainLayout.class)
+@PageTitle("Estadísticas")
 public class DashboardView extends VerticalLayout {
     private final CrmService service;
 
     public DashboardView(CrmService service) {
         this.service = service;
-        addClassName("dashboard-view");
+        addClassName("estadisticas-view");
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         add(getContactStats(), getCompaniesChart());
     }

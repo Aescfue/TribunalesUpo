@@ -1,5 +1,7 @@
 package org.upo.tribunalesupo.services;
 
+import org.upo.tribunalesupo.data.Docente;
+import org.upo.tribunalesupo.data.Tfg;
 import org.upo.tribunalesupo.data.Tribunal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,4 +46,9 @@ public interface TribunalRepository extends JpaRepository<Tribunal, Long> {
             nativeQuery = true
     )
     List<Object[]> docentesMenosParticipaciones();
+
+    List<Tribunal> findByCodigoTFG(Tfg tfg);
+    List<Tribunal> findByDocente1(Docente d);
+    List<Tribunal> findByDocente2(Docente d);
+    List<Tribunal> findByDocente3(Docente d);
 }

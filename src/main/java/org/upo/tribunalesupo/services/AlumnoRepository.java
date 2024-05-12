@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.upo.tribunalesupo.data.Persona;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
             value = "INSERT INTO Alumno (dni, fecha_ingreso) VALUES (:dni, :fecha)",
             nativeQuery = true)
     void guardar(@Param("dni") String dni, @Param("fecha")LocalDate fecha );
+
+    List<Alumno> findByPersona(Persona p);
 }

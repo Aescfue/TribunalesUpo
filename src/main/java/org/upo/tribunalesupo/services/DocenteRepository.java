@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.upo.tribunalesupo.data.Persona;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,6 +22,7 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
     List<Docente> buscarDni(@Param("searchTerm") String searchTerm);
 
     List<Docente> findByDni(String dni);
+    List<Docente> findByPersona(Persona p);
 
     @Transactional
     @Modifying

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.upo.tribunalesupo</groupId>
     <artifactId>TribunalesUpo</artifactId>
-    <name>flowcrmtutorial</name>
+    <name>TribunalesUpo</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -92,10 +92,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>

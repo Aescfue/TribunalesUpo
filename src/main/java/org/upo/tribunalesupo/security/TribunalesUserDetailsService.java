@@ -33,7 +33,7 @@ public class TribunalesUserDetailsService implements UserDetailsService {
             Persona persona = it.next();
             List<Rol> roles = rolRepository.search(persona.getUsuario());
             for (Rol rol : roles) {
-                authorityList.add(new SimpleGrantedAuthority(rol.getCodigo()));
+                authorityList.add(new SimpleGrantedAuthority("ROLE_"+rol.getCodigo()));
             }
             return new org.springframework.security.core.userdetails.User(persona.getUsuario(), persona.getContrasena(), authorityList);
 

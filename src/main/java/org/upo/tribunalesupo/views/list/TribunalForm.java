@@ -1,9 +1,6 @@
 package org.upo.tribunalesupo.views.list;
 
-import org.upo.tribunalesupo.data.Convocatoria;
-import org.upo.tribunalesupo.data.Docente;
-import org.upo.tribunalesupo.data.Tfg;
-import org.upo.tribunalesupo.data.Tribunal;
+import org.upo.tribunalesupo.data.*;
 import org.upo.tribunalesupo.services.CrmService;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
@@ -48,6 +45,7 @@ public class TribunalForm extends FormLayout {
             docente_3.setItemLabelGenerator(docente -> docente.getPersona().getNombre() + " " + docente.getPersona().getApellidos());
             convocatoria.setItems(convocatorias);
             convocatoria.setItemLabelGenerator(Convocatoria -> Convocatoria.getId().getCurso() + " " + Convocatoria.getId().getNumero());
+            tfgs.sort(new ComparadorCodigoTfg());
             codigoTfg.setItems(tfgs);
             codigoTfg.setItemLabelGenerator(Tfg::getCodigo);
             add(docente_1,docente_2,docente_3,codigoTfg,convocatoria,fecha,createButtonsLayout());
@@ -60,6 +58,7 @@ public class TribunalForm extends FormLayout {
 
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
+        delete.addClickShortcut(Key.DELETE);
 
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new TribunalForm.DeleteEvent(this, binder.getBean())));

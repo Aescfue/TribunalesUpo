@@ -9,8 +9,14 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.upo.tribunalesupo.security.SecurityService;
 import org.upo.tribunalesupo.views.list.*;
+
+import java.util.Collection;
 
 public class MainLayout extends AppLayout {
     private final SecurityService securityService;
@@ -44,15 +50,27 @@ public class MainLayout extends AppLayout {
     }
 
     private void createDrawer() {
-        addToDrawer(new VerticalLayout(
-                new RouterLink("Personas", PersonaListView.class),
-                new RouterLink("Docentes", DocenteListView.class),
-                new RouterLink("Alumnos", AlumnoListView.class),
-                new RouterLink("Tfg", TfgListView.class),
-                new RouterLink("Tribunales", TribunalListView.class),
-                new RouterLink("Convocatorias",ConvocatoriaListView.class),
-                new RouterLink("Defensas", DefensaListView.class),
-                new RouterLink("Estadísticas", DashboardView.class)
-        ));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
+
+        if(roles.contains(new SimpleGrantedAuthority("ROLE_ALU")) || roles.contains(new SimpleGrantedAuthority("ROLE_DOC")) || roles.isEmpty()) {
+            addToDrawer(new VerticalLayout(
+                    new RouterLink("Personas", PersonaListView.class),
+                    new RouterLink("Tfg", TfgListView.class),
+                    new RouterLink("Tribunales", TribunalListView.class)
+            ));
+        }else{
+            addToDrawer(new VerticalLayout(
+                    new RouterLink("Personas", PersonaListView.class),
+                    new RouterLink("Docentes", DocenteListView.class),
+                    new RouterLink("Alumnos", AlumnoListView.class),
+                    new RouterLink("Tfg", TfgListView.class),
+                    new RouterLink("Tribunales", TribunalListView.class),
+                    new RouterLink("Convocatorias",ConvocatoriaListView.class),
+                    new RouterLink("Defensas", DefensaListView.class),
+                    new RouterLink("Estadísticas", DashboardView.class)
+            ));
+        }
+
     }
 }

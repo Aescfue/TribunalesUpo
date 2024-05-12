@@ -338,4 +338,44 @@ public class CrmService {
     public List<Object[]> obtenerDocentesMenosParticipacion(){
         return tribunalRepository.docentesMenosParticipaciones();
     }
+
+    public List<Persona> buscarPersona(String usuario) {
+        return personaRepository.findByUsuario(usuario);
+    }
+
+    public List<Tfg> buscarTfgPersona(Persona p) {
+        Set<Tfg> tfgs = new HashSet<Tfg>();
+        //se mira si es alumno
+        List<Alumno> a = alumnoRepository.findByPersona(p);
+        if(!a.isEmpty()){
+            tfgs.addAll(tfgRepository.findByAlumno(a.get(0)));
+        }
+        //Se mira si es docente
+        List<Docente> d = docenteRepository.findByPersona(p);
+        if(!d.isEmpty()){
+            tfgs.addAll(tfgRepository.buscarTfgsDocente(d.get(0)));
+        }
+        return new ArrayList<Tfg>(tfgs);
+    }
+
+    public List<Tribunal> buscarTribunalPersona(Persona p) {
+        Set<Tribunal> tribunales = new HashSet<Tribunal>();
+        //Se mira si es alumno
+        List<Alumno> a = this.alumnoRepository.findByPersona(p);
+        if(!a.isEmpty()){
+            List<Tfg> lista = tfgRepository.findByAlumno(a.get(0));
+                for (Tfg tfg : lista) {
+                    List<Tribunal> trib = this.tribunalRepository.findByCodigoTFG(tfg);
+                    tribunales.addAll(trib);
+                }
+        }
+        //se mira si es docente
+        List<Docente> d = docenteRepository.findByPersona(p);
+        if(!d.isEmpty()){
+            tribunales.addAll(tribunalRepository.findByDocente1(d.get(0)));
+            tribunales.addAll(tribunalRepository.findByDocente2(d.get(0)));
+            tribunales.addAll(tribunalRepository.findByDocente3(d.get(0)));
+        }
+        return new ArrayList<Tribunal>(tribunales);
+    }
 }

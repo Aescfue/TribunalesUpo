@@ -1,8 +1,5 @@
 package org.upo.tribunalesupo.views.list;
 
-import org.upo.tribunalesupo.data.Persona;
-import org.upo.tribunalesupo.services.CrmService;
-import org.upo.tribunalesupo.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,6 +10,12 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.upo.tribunalesupo.data.Persona;
+import org.upo.tribunalesupo.services.CrmService;
+import org.upo.tribunalesupo.views.MainLayout;
 
 @PermitAll
 @Route(value = "", layout = MainLayout.class)
@@ -22,23 +25,37 @@ public class PersonaListView extends VerticalLayout {
     TextField filterText = new TextField();
     PersonaForm form;
     CrmService service;
+    Authentication rolesAut = SecurityContextHolder.getContext().getAuthentication();
 
     public PersonaListView(CrmService service) {
+
+
         this.service = service;
         addClassName("PersonaList-view");
         setSizeFull();
         configureGrid();
-        configureForm();
 
-        add(getToolbar(), getContent());
-        updateList();
-        closeEditor();
+        if(!rolesAut.getAuthorities().isEmpty() && !rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ALU")) && !rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_DOC"))) {
+            configureForm();
+            add(getToolbar(), getContent());
+            updateList();
+            closeEditor();
+        }else{
+            add(getContent());
+            updateList(rolesAut.getName());
+        }
     }
 
     private HorizontalLayout getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(2, grid);
-        content.setFlexGrow(1, form);
+        HorizontalLayout content;
+        if(rolesAut.getAuthorities().isEmpty() || rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ALU")) || rolesAut.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_DOC"))) {
+             content = new HorizontalLayout(grid);
+            content.setFlexGrow(2, grid);
+        }else{
+            content = new HorizontalLayout(grid, form);
+            content.setFlexGrow(2, grid);
+            content.setFlexGrow(1, form);
+        }
         content.addClassNames("content");
         content.setSizeFull();
         return content;
@@ -115,8 +132,11 @@ public class PersonaListView extends VerticalLayout {
         editPersona(new Persona());
     }
 
-
     private void updateList() {
         grid.setItems(service.buscarTodasPersonas(filterText.getValue()));
+    }
+
+    private void updateList(String usuario) {
+        grid.setItems(service.buscarPersona(usuario));
     }
 }
