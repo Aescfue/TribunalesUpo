@@ -7,9 +7,6 @@ Proyecto que usa spring y vaadin para facilitar la generación de tribunales
 El proyecto es un proyecto Maven estándar. Para ejecutarlo desde la línea de comandos,
 escribe mvnw (Windows), o ./mvnw (Mac & Linux), luego abre http://localhost:8080 en tu navegador.
 
-You can also import the project to your IDE of choice as you would with any
-Maven project. Read more on [how to import Vaadin projects to different IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
-
 ## Implementar en producción
 
 Para crear una compilación de producción, llama a mvnw clean package -Pproduction (Windows),
