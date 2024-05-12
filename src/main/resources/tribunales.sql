@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-05-2024 a las 19:48:49
+-- Tiempo de generación: 12-05-2024 a las 13:57:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -181,7 +181,7 @@ CREATE TABLE `persona` (
 INSERT INTO `persona` (`dni`, `nombre`, `apellidos`, `contrasena`, `telefono`, `usuario`, `correo_electronico`, `fecha_nacimiento`) VALUES
 ('00000000A', 'Domingo Savio', 'Rodríguez Baena', '', 666666666, 'drodbae', 'dsrodbae@upo.es', '2005-02-15'),
 ('00000000B', 'Roberto', 'Ruíz Sánchez', '', 666666666, 'rruisan', 'rruisan1@upo.es', '2013-04-11'),
-('00000000C', 'Norberto', 'Díaz Díaz', '', NULL, 'ndiadia', 'ndiaz@upo.es', '2009-03-12'),
+('00000000C', 'Norberto', 'Díaz Díaz', '$2a$10$klohIytBAxL/Jivhep2f.e0D4awnRARaH07UgFFEhSU/eUVREE68.', NULL, 'ndiadia', 'ndiaz@upo.es', '2009-03-12'),
 ('00000000D', 'Raúl', 'Giráldez Rojo', '', NULL, 'rgirroj', 'rgirroj@upo.es', '2015-02-11'),
 ('00000000E', 'Miguel', 'García Torres', '', NULL, 'mgartor', 'mgarciat@upo.es', NULL),
 ('00000000F', 'Francisco Antonio', 'Gomez Vela', '', NULL, 'fgomvel', 'fgomez@upo.es', NULL),
@@ -216,7 +216,7 @@ INSERT INTO `persona` (`dni`, `nombre`, `apellidos`, `contrasena`, `telefono`, `
 ('11111111H', 'David', 'Caballos Reina', '', NULL, 'dcabrei', '', NULL),
 ('11111111I', 'Jesus', 'Cívico Lobato', '', NULL, 'jcivlob', '', NULL),
 ('11111111J', 'Alejandro', 'Gamez Collantes De Teran', '', NULL, 'agamcol', '', NULL),
-('11111111K', 'Andrea', 'García Castillo', '', NULL, 'agarcas', '', NULL),
+('11111111K', 'Andrea', 'García Castillo', '$2a$10$MwG0kgf8Ef2mqVXM5urRc.nUNqZ6fLMwPimjNe9/AntARWU.AYVXW', NULL, 'agarcas', '', NULL),
 ('11111111L', 'Alejandro', 'García Conde', '', NULL, 'agarcon', '', NULL),
 ('11111111M', 'Guillermo', 'Garrido Contreras', '', NULL, 'ggarcon', '', NULL),
 ('11111111N', 'Ignacio', 'Lopez Muñoyerro', '', NULL, 'ilopmun', '', NULL),
@@ -252,7 +252,8 @@ CREATE TABLE `rol` (
 --
 
 INSERT INTO `rol` (`codigo`, `usuario`) VALUES
-('ADMIN', 'aescfue');
+('ADMIN', 'aescfue'),
+('ALU', 'agarcas');
 
 -- --------------------------------------------------------
 
@@ -325,7 +326,7 @@ CREATE TABLE `tribunal` (
 --
 
 INSERT INTO `tribunal` (`id_tribunal`, `fecha`, `codigoTFG`, `dni_1`, `dni_2`, `dni_3`, `curso_conv`, `numero_conv`) VALUES
-(21, '2024-05-08', '23-24-C17', '00000000J', '00000000Y', '00000000I', 2023, 1),
+(21, '2024-05-21', '23-24-C1', '00000000U', '00000000W', '00000000E', 2023, 1),
 (112, '2024-05-20', '22-23-C9', '00000000C', '00000000E', '00000000H', 2023, 1),
 (113, '2024-05-13', '22-23-C9', '00000000C', '00000000D', '00000000G', 2023, 2);
 
@@ -407,7 +408,7 @@ ALTER TABLE `defensa`
 -- AUTO_INCREMENT de la tabla `tribunal`
 --
 ALTER TABLE `tribunal`
-  MODIFY `id_tribunal` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `id_tribunal` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
 
 --
 -- Restricciones para tablas volcadas
