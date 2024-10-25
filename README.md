@@ -1,6 +1,6 @@
 # TribunalesTFG
 
-Proyecto que usa spring y vaadin para facilitar la generación de tribunales de TFG con procesos automatizados en la generación de tribunales
+Proyecto Maven que usa spring y vaadin para facilitar la generación de tribunales de TFG con procesos automatizados en la generación de tribunales
 
 ## Estructura
 
